@@ -18,6 +18,7 @@ import { CultivationModule } from './cultivation/cultivation.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       port: 5432,
+      autoLoadEntities: true,
     }),
     ProducersModule,
     FarmsModule,
