@@ -7,12 +7,11 @@ import * as cors from 'cors';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
-      transform: true, 
+      transform: true,
     }),
   );
 
@@ -30,8 +29,7 @@ async function bootstrap() {
 
   app.use(
     cors({
-      origin: 'http://localhost:3000',
-      'http://69.62.91.169:3000'
+      origin: ['http://localhost:3000', 'http://69.62.91.169:3000'],
     }),
   );
 
