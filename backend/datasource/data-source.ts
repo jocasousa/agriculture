@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import { DataSource } from 'typeorm';
-import { Producer } from '../src/producers/entities/producer.entity';
 
 export default new DataSource({
   type: 'postgres',

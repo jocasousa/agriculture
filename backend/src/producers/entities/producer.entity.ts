@@ -28,4 +28,6 @@ export class Producer {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  
 }

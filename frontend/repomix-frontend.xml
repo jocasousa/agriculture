@@ -1,0 +1,3135 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.gitignore
+babel.config.cjs
+docker-compose.yml
+Dockerfile
+eslint.config.js
+index.html
+jest.config.cjs
+jest.setup.js
+package.json
+public/vite.svg
+README.md
+src/api/api.js
+src/api/api.ts
+src/app/store.js
+src/app/store.ts
+src/components/atoms/Button.js
+src/components/atoms/Button.tsx
+src/components/atoms/Input.js
+src/components/atoms/Input.tsx
+src/components/navbar/Navbar.js
+src/components/navbar/Navbar.tsx
+src/features/auth/authSlice.js
+src/features/auth/authSlice.ts
+src/features/producers/producersSlice.js
+src/features/producers/producersSlice.ts
+src/hooks/useAppDispatch.js
+src/hooks/useAppDispatch.ts
+src/hooks/useAppSelector.js
+src/hooks/useAppSelector.ts
+src/main.js
+src/main.tsx
+src/pages/dashboard/__tests__/DashboardPage.test.js
+src/pages/dashboard/__tests__/DashboardPage.test.tsx
+src/pages/dashboard/index.js
+src/pages/dashboard/index.tsx
+src/pages/login/index.js
+src/pages/login/index.tsx
+src/pages/producer/__tests__/ProducerPage.test.js
+src/pages/producer/__tests__/ProducerPage.test.tsx
+src/pages/producer/index.js
+src/pages/producer/index.tsx
+src/pages/producer/ProducerForm.js
+src/pages/producer/ProducerForm.tsx
+src/routes/AppRoutes.js
+src/routes/AppRoutes.tsx
+src/styles/global.css
+src/types/cultivation.js
+src/types/cultivation.ts
+src/types/dashboard.js
+src/types/dashboard.ts
+src/types/farm.js
+src/types/farm.ts
+src/types/producer.js
+src/types/producer.ts
+src/vite-env.d.ts
+tsconfig.app.json
+tsconfig.json
+tsconfig.node.json
+tsconfig.tsbuildinfo
+vite.config.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".gitignore">
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+</file>
+
+<file path="babel.config.cjs">
+module.exports = {
+  presets: [
+    "@babel/preset-env",
+    "@babel/preset-typescript",
+    ["@babel/preset-react", { runtime: "automatic" }],
+  ],
+};
+</file>
+
+<file path="docker-compose.yml">
+frontend:
+  build: ./frontend
+  ports:
+    - "3001:3000"
+  depends_on:
+    - backend
+</file>
+
+<file path="Dockerfile">
+# Dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "run", "preview"]
+</file>
+
+<file path="eslint.config.js">
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from 'typescript-eslint'
+
+export default tseslint.config(
+  { ignores: ['dist'] },
+  {
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+    },
+  },
+)
+</file>
+
+<file path="index.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agriculture 1.0</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+</file>
+
+<file path="jest.config.cjs">
+module.exports = {
+  preset: "ts-jest",
+  testEnvironment: "jsdom",
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+  },
+  transform: {
+    "^.+\\.(ts|tsx)$": "babel-jest",
+  },
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
+};
+</file>
+
+<file path="jest.setup.js">
+require("@testing-library/jest-dom");
+
+// Polyfill para TextEncoder/TextDecoder (caso não existam no Node)
+if (typeof global.TextEncoder === "undefined") {
+  const { TextEncoder, TextDecoder } = require("util");
+  global.TextEncoder = TextEncoder;
+  global.TextDecoder = TextDecoder;
+}
+
+// Polyfill para import.meta.env (Vite)
+globalThis.import = {
+  meta: { env: { VITE_API_URL: "http://localhost:3002" } },
+};
+</file>
+
+<file path="package.json">
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
+    "@reduxjs/toolkit": "^2.8.2",
+    "axios": "^1.9.0",
+    "cpf-cnpj-validator": "^1.0.3",
+    "lucide-react": "^0.511.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.56.4",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.6.1",
+    "recharts": "^2.15.3",
+    "styled-components": "^6.1.18",
+    "yup": "^1.6.1",
+    "zod": "^3.25.30"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@eslint/js": "^9.25.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^29.5.14",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@types/styled-components": "^5.1.34",
+    "@types/testing-library__jest-dom": "^6.0.0",
+    "@types/yup": "^0.32.0",
+    "@vitejs/plugin-react": "^4.4.1",
+    "babel-jest": "^29.7.0",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.0.0-beta.3",
+    "msw": "^2.8.4",
+    "ts-jest": "^29.3.4",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.30.1",
+    "vite": "^6.3.5",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}
+</file>
+
+<file path="public/vite.svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="31.88" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 257"><defs><linearGradient id="IconifyId1813088fe1fbc01fb466" x1="-.828%" x2="57.636%" y1="7.652%" y2="78.411%"><stop offset="0%" stop-color="#41D1FF"></stop><stop offset="100%" stop-color="#BD34FE"></stop></linearGradient><linearGradient id="IconifyId1813088fe1fbc01fb467" x1="43.376%" x2="50.316%" y1="2.242%" y2="89.03%"><stop offset="0%" stop-color="#FFEA83"></stop><stop offset="8.333%" stop-color="#FFDD35"></stop><stop offset="100%" stop-color="#FFA800"></stop></linearGradient></defs><path fill="url(#IconifyId1813088fe1fbc01fb466)" d="M255.153 37.938L134.897 252.976c-2.483 4.44-8.862 4.466-11.382.048L.875 37.958c-2.746-4.814 1.371-10.646 6.827-9.67l120.385 21.517a6.537 6.537 0 0 0 2.322-.004l117.867-21.483c5.438-.991 9.574 4.796 6.877 9.62Z"></path><path fill="url(#IconifyId1813088fe1fbc01fb467)" d="M185.432.063L96.44 17.501a3.268 3.268 0 0 0-2.634 3.014l-5.474 92.456a3.268 3.268 0 0 0 3.997 3.378l24.777-5.718c2.318-.535 4.413 1.507 3.936 3.838l-7.361 36.047c-.495 2.426 1.782 4.5 4.151 3.78l15.304-4.649c2.372-.72 4.652 1.36 4.15 3.788l-11.698 56.621c-.732 3.542 3.979 5.473 5.943 2.437l1.313-2.028l72.516-144.72c1.215-2.423-.88-5.186-3.54-4.672l-25.505 4.922c-2.396.462-4.435-1.77-3.759-4.114l16.646-57.705c.677-2.35-1.37-4.583-3.769-4.113Z"></path></svg>
+</file>
+
+<file path="README.md">
+# React + TypeScript + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
+</file>
+
+<file path="src/api/api.js">
+import axios from "axios";
+const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3002",
+});
+export default api;
+</file>
+
+<file path="src/api/api.ts">
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3002",
+});
+
+export default api;
+</file>
+
+<file path="src/app/store.js">
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "@/features/auth/authSlice";
+export const store = configureStore({
+    reducer: {
+        auth: authReducer,
+    },
+});
+</file>
+
+<file path="src/app/store.ts">
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "@/features/auth/authSlice";
+
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+  },
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;
+</file>
+
+<file path="src/components/atoms/Button.js">
+import { jsx as _jsx } from "react/jsx-runtime";
+import styled from 'styled-components';
+const StyledButton = styled.button `
+  background-color: ${({ variant = 'primary' }) => variant === 'secondary' ? '#1c7d47' : '#69eca3'};
+  color: #ffffff;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
+export const Button = ({ variant = 'primary', children, ...props }) => (_jsx(StyledButton, { variant: variant, ...props, children: children }));
+</file>
+
+<file path="src/components/atoms/Button.tsx">
+import React from 'react';
+import styled from 'styled-components';
+
+export type ButtonVariant = 'primary' | 'secondary';
+
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant;
+}
+
+const StyledButton = styled.button<ButtonProps>`
+  background-color: ${({ variant = 'primary' }) =>
+    variant === 'secondary' ? '#1c7d47' : '#69eca3'};
+  color: #ffffff;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
+
+export const Button: React.FC<ButtonProps> = ({ variant = 'primary', children, ...props }) => (
+  <StyledButton variant={variant} {...props}>
+    {children}
+  </StyledButton>
+);
+</file>
+
+<file path="src/components/atoms/Input.js">
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import styled from 'styled-components';
+const InputWrapper = styled.div `
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.75rem;
+`;
+const StyledLabel = styled.label `
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1c7d47;
+`;
+const StyledInput = styled.input.withConfig({
+    shouldForwardProp: (prop) => prop !== 'hasError'
+}) `
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid ${({ hasError }) => (hasError ? 'red' : '#ccc')};
+  border-radius: 0.375rem;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #69eca3;
+    box-shadow: 0 0 0 2px rgba(105, 236, 163, 0.3);
+  }
+`;
+const ErrorText = styled.span `
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: red;
+`;
+export const Input = ({ label, error, ...props }) => (_jsxs(InputWrapper, { children: [label && _jsx(StyledLabel, { children: label }), _jsx(StyledInput, { hasError: !!error, ...props }), error && _jsx(ErrorText, { children: error })] }));
+</file>
+
+<file path="src/components/atoms/Input.tsx">
+// src/components/atoms/Input.tsx
+import React from 'react';
+import styled from 'styled-components';
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+}
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.75rem;
+`;
+
+const StyledLabel = styled.label`
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1c7d47;
+`;
+
+const StyledInput = styled.input.withConfig({
+  shouldForwardProp: (prop) => prop !== 'hasError'
+})<{ hasError?: boolean }>`
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid ${({ hasError }) => (hasError ? 'red' : '#ccc')};
+  border-radius: 0.375rem;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #69eca3;
+    box-shadow: 0 0 0 2px rgba(105, 236, 163, 0.3);
+  }
+`;
+
+const ErrorText = styled.span`
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: red;
+`;
+
+export const Input: React.FC<InputProps> = ({ label, error, ...props }) => (
+  <InputWrapper>
+    {label && <StyledLabel>{label}</StyledLabel>}
+    <StyledInput hasError={!!error} {...props} />
+    {error && <ErrorText>{error}</ErrorText>}
+  </InputWrapper>
+);
+</file>
+
+<file path="src/components/navbar/Navbar.js">
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { Tractor, Home, Users, LogOut } from 'lucide-react';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { logout } from '@/features/auth/authSlice';
+import { Button } from '@/components/atoms/Button';
+const Nav = styled.nav `
+  width: 100%;
+  background-color: #1c7d47;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+const LogoWrapper = styled.div `
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+const CenterMenu = styled.div `
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+`;
+const RightMenu = styled.div `
+  display: flex;
+  align-items: center;
+`;
+export const Navbar = () => {
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/login', { replace: true });
+    };
+    return (_jsxs(Nav, { children: [_jsxs(LogoWrapper, { children: [_jsx(Tractor, { size: 24, style: { marginRight: '0.5rem' } }), "Agriculture"] }), _jsxs(CenterMenu, { children: [_jsxs(Button, { variant: "secondary", onClick: () => navigate('/'), children: [_jsx(Home, { size: 16, style: { marginRight: '0.25rem' } }), "Dashboard"] }), _jsxs(Button, { variant: "secondary", onClick: () => navigate('/producer'), children: [_jsx(Users, { size: 16, style: { marginRight: '0.25rem' } }), "Produtores"] })] }), _jsx(RightMenu, { children: _jsxs(Button, { variant: "secondary", onClick: handleLogout, children: [_jsx(LogOut, { size: 16, style: { marginRight: '0.25rem' } }), "Sair"] }) })] }));
+};
+</file>
+
+<file path="src/components/navbar/Navbar.tsx">
+// src/components/Navbar.tsx
+import React from 'react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { Tractor, Home, Users, LogOut } from 'lucide-react';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { logout } from '@/features/auth/authSlice';
+import { Button } from '@/components/atoms/Button';
+
+const Nav = styled.nav`
+  width: 100%;
+  background-color: #1c7d47;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const LogoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: bold;
+`;
+
+const CenterMenu = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+`;
+
+const RightMenu = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const Navbar: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login', { replace: true });
+  };
+
+  return (
+    <Nav>
+      <LogoWrapper>
+        <Tractor size={24} style={{ marginRight: '0.5rem' }} />
+        Agriculture
+      </LogoWrapper>
+
+      <CenterMenu>
+        <Button
+          variant="secondary"
+          onClick={() => navigate('/')}
+        >
+          <Home size={16} style={{ marginRight: '0.25rem' }} />
+          Dashboard
+        </Button>
+
+        <Button
+          variant="secondary"
+          onClick={() => navigate('/producer')}
+        >
+          <Users size={16} style={{ marginRight: '0.25rem' }} />
+          Produtores
+        </Button>
+      </CenterMenu>
+
+      <RightMenu>
+        <Button
+          variant="secondary"
+          onClick={handleLogout}
+        >
+          <LogOut size={16} style={{ marginRight: '0.25rem' }} />
+          Sair
+        </Button>
+      </RightMenu>
+    </Nav>
+  );
+};
+</file>
+
+<file path="src/features/auth/authSlice.js">
+import { createSlice } from "@reduxjs/toolkit";
+// 1. Lê o estado inicial do localStorage
+const persistedAuth = localStorage.getItem("isAuthenticated") === "true";
+const initialState = {
+    isAuthenticated: persistedAuth,
+    error: undefined,
+};
+const authSlice = createSlice({
+    name: "auth",
+    initialState,
+    reducers: {
+        login(state, action) {
+            const { user, pass } = action.payload;
+            if (user === "admin" && pass === "123456") {
+                state.isAuthenticated = true;
+                state.error = undefined;
+                localStorage.setItem("isAuthenticated", "true");
+            }
+            else {
+                state.error = "Usuário ou senha inválidos";
+            }
+        },
+        logout(state) {
+            state.isAuthenticated = false;
+            state.error = undefined;
+            localStorage.removeItem("isAuthenticated");
+        },
+    },
+});
+export const { login, logout } = authSlice.actions;
+export default authSlice.reducer;
+</file>
+
+<file path="src/features/auth/authSlice.ts">
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+// 1. Lê o estado inicial do localStorage
+const persistedAuth = localStorage.getItem("isAuthenticated") === "true";
+
+interface AuthState {
+  isAuthenticated: boolean;
+  error?: string;
+}
+
+const initialState: AuthState = {
+  isAuthenticated: persistedAuth,
+  error: undefined,
+};
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
+  reducers: {
+    login(state, action: PayloadAction<{ user: string; pass: string }>) {
+      const { user, pass } = action.payload;
+      if (user === "admin" && pass === "123456") {
+        state.isAuthenticated = true;
+        state.error = undefined;
+        localStorage.setItem("isAuthenticated", "true");
+      } else {
+        state.error = "Usuário ou senha inválidos";
+      }
+    },
+    logout(state) {
+      state.isAuthenticated = false;
+      state.error = undefined;
+      localStorage.removeItem("isAuthenticated");
+    },
+  },
+});
+
+export const { login, logout } = authSlice.actions;
+export default authSlice.reducer;
+</file>
+
+<file path="src/features/producers/producersSlice.js">
+import api from "@/api/api";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+export const fetchProducers = createAsyncThunk("producers/fetchAll", async () => {
+    const response = await api.get("/producers");
+    return response.data;
+});
+</file>
+
+<file path="src/features/producers/producersSlice.ts">
+import api from "@/api/api";
+import { Producer } from "@/types/producer";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+export const fetchProducers = createAsyncThunk<Producer[]>(
+  "producers/fetchAll",
+  async () => {
+    const response = await api.get<Producer[]>("/producers");
+    return response.data;
+  }
+);
+</file>
+
+<file path="src/hooks/useAppDispatch.js">
+import { useDispatch } from "react-redux";
+export const useAppDispatch = () => useDispatch();
+</file>
+
+<file path="src/hooks/useAppDispatch.ts">
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/app/store";
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+</file>
+
+<file path="src/hooks/useAppSelector.js">
+import { useSelector } from "react-redux";
+export const useAppSelector = useSelector;
+</file>
+
+<file path="src/hooks/useAppSelector.ts">
+import { useSelector } from "react-redux";
+import type { TypedUseSelectorHook } from "react-redux";
+import type { RootState } from "@/app/store";
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+</file>
+
+<file path="src/main.js">
+import { jsx as _jsx } from "react/jsx-runtime";
+// src/main.tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import '@/styles/global.css';
+import { store } from '@/app/store';
+import { AppRoutes } from '@/routes/AppRoutes';
+ReactDOM.createRoot(document.getElementById('root')).render(_jsx(React.StrictMode, { children: _jsx(Provider, { store: store, children: _jsx(BrowserRouter, { children: _jsx(AppRoutes, {}) }) }) }));
+</file>
+
+<file path="src/main.tsx">
+// src/main.tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import '@/styles/global.css';
+import { store } from '@/app/store';
+import { AppRoutes } from '@/routes/AppRoutes';
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>
+);
+</file>
+
+<file path="src/pages/dashboard/__tests__/DashboardPage.test.js">
+import { jsx as _jsx } from "react/jsx-runtime";
+jest.mock('@/api/api', () => ({
+    __esModule: true,
+    default: {
+        get: jest.fn(),
+    },
+}));
+jest.mock("@/components/navbar/Navbar", () => ({
+    Navbar: () => _jsx("div", { "data-testid": "navbar", children: "Navbar" }),
+}));
+jest.mock("@/hooks/useAppSelector", () => ({
+    useAppSelector: () => true,
+}));
+jest.mock('recharts', () => ({
+    PieChart: ({ children }) => _jsx("div", { "data-testid": "piechart", children: children }),
+    Pie: ({ children }) => _jsx("div", { "data-testid": "pie", children: children }),
+    Cell: () => _jsx("div", { "data-testid": "cell" }),
+    Tooltip: () => _jsx("div", { "data-testid": "tooltip" }),
+    Legend: () => _jsx("div", { "data-testid": "legend" }),
+    ResponsiveContainer: ({ children }) => _jsx("div", { "data-testid": "responsive", children: children }),
+}));
+import { render, screen, waitFor } from "@testing-library/react";
+import DashboardPage from "../index";
+import { Provider } from "react-redux";
+import { store } from "@/app/store";
+import { BrowserRouter } from "react-router-dom";
+import api from "@/api/api";
+const mockSummary = { totalFarms: 5, totalArea: 1200 };
+const mockByState = [{ state: "SP", count: 3 }, { state: "PR", count: 2 }];
+const mockByCrop = [{ crop: "Soja", count: 3 }, { crop: "Milho", count: 2 }];
+const mockLandUse = { arable: 800, vegetation: 400 };
+beforeAll(() => {
+    api.get.mockImplementation((url) => {
+        switch (url) {
+            case "/dashboard/summary":
+                return Promise.resolve({ data: mockSummary });
+            case "/dashboard/by-state":
+                return Promise.resolve({ data: mockByState });
+            case "/dashboard/by-crop":
+                return Promise.resolve({ data: mockByCrop });
+            case "/dashboard/land-use":
+                return Promise.resolve({ data: mockLandUse });
+            default:
+                return Promise.resolve({ data: {} });
+        }
+    });
+});
+describe("DashboardPage", () => {
+    it("renderiza resumo e gráficos corretamente", async () => {
+        render(_jsx(Provider, { store: store, children: _jsx(BrowserRouter, { children: _jsx(DashboardPage, {}) }) }));
+        // Espera carregar e renderizar o resumo
+        await waitFor(() => {
+            expect(screen.getByText("Fazendas")).toBeInTheDocument();
+            expect(screen.getByText("5")).toBeInTheDocument();
+            expect(screen.getByText("Total Hectares")).toBeInTheDocument();
+            expect(screen.getByText("1200")).toBeInTheDocument();
+        });
+        // Títulos dos gráficos
+        expect(screen.getByText("Por Estado")).toBeInTheDocument();
+        expect(screen.getByText("Por Cultura")).toBeInTheDocument();
+        expect(screen.getByText("Uso do Solo")).toBeInTheDocument();
+        // Os gráficos existem (mas não labels)
+        expect(screen.getAllByTestId("piechart")).toHaveLength(3);
+        expect(screen.getAllByTestId("pie")).toHaveLength(3);
+        expect(screen.getAllByTestId("cell")).toHaveLength(6); // 2 cells por gráfico no mock
+    });
+});
+</file>
+
+<file path="src/pages/dashboard/__tests__/DashboardPage.test.tsx">
+jest.mock('@/api/api', () => ({
+  __esModule: true,
+  default: {
+    get: jest.fn(),
+  },
+}));
+
+jest.mock("@/components/navbar/Navbar", () => ({
+  Navbar: () => <div data-testid="navbar">Navbar</div>,
+}));
+
+jest.mock("@/hooks/useAppSelector", () => ({
+  useAppSelector: () => true,
+}));
+
+jest.mock('recharts', () => ({
+  PieChart: ({ children }: any) => <div data-testid="piechart">{children}</div>,
+  Pie: ({ children }: any) => <div data-testid="pie">{children}</div>,
+  Cell: () => <div data-testid="cell"></div>,
+  Tooltip: () => <div data-testid="tooltip"></div>,
+  Legend: () => <div data-testid="legend"></div>,
+  ResponsiveContainer: ({ children }: any) => <div data-testid="responsive">{children}</div>,
+}));
+
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
+import DashboardPage from "../index";
+import { Provider } from "react-redux";
+import { store } from "@/app/store";
+import { BrowserRouter } from "react-router-dom";
+import api from "@/api/api";
+
+const mockSummary = { totalFarms: 5, totalArea: 1200 };
+const mockByState = [{ state: "SP", count: 3 }, { state: "PR", count: 2 }];
+const mockByCrop = [{ crop: "Soja", count: 3 }, { crop: "Milho", count: 2 }];
+const mockLandUse = { arable: 800, vegetation: 400 };
+
+beforeAll(() => {
+  (api.get as jest.Mock).mockImplementation((url: string) => {
+    switch (url) {
+      case "/dashboard/summary":
+        return Promise.resolve({ data: mockSummary });
+      case "/dashboard/by-state":
+        return Promise.resolve({ data: mockByState });
+      case "/dashboard/by-crop":
+        return Promise.resolve({ data: mockByCrop });
+      case "/dashboard/land-use":
+        return Promise.resolve({ data: mockLandUse });
+      default:
+        return Promise.resolve({ data: {} });
+    }
+  });
+});
+
+describe("DashboardPage", () => {
+  it("renderiza resumo e gráficos corretamente", async () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <DashboardPage />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    // Espera carregar e renderizar o resumo
+    await waitFor(() => {
+      expect(screen.getByText("Fazendas")).toBeInTheDocument();
+      expect(screen.getByText("5")).toBeInTheDocument();
+      expect(screen.getByText("Total Hectares")).toBeInTheDocument();
+      expect(screen.getByText("1200")).toBeInTheDocument();
+    });
+
+    // Títulos dos gráficos
+    expect(screen.getByText("Por Estado")).toBeInTheDocument();
+    expect(screen.getByText("Por Cultura")).toBeInTheDocument();
+    expect(screen.getByText("Uso do Solo")).toBeInTheDocument();
+
+    // Os gráficos existem (mas não labels)
+    expect(screen.getAllByTestId("piechart")).toHaveLength(3);
+    expect(screen.getAllByTestId("pie")).toHaveLength(3);
+    expect(screen.getAllByTestId("cell")).toHaveLength(6); // 2 cells por gráfico no mock
+  });
+});
+</file>
+
+<file path="src/pages/dashboard/index.js">
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+// src/pages/dashboard/index.tsx
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import api from '@/api/api';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { useNavigate } from 'react-router-dom';
+import { Navbar } from '@/components/navbar/Navbar';
+const chartColors = ['#69eca3', '#1c7d47', '#82ca9d', '#8884d8'];
+// --- Styled Components ---
+const PageWrapper = styled.div `
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: #f5f5f5;
+  min-height: 100vh;
+`;
+const Header = styled.div `
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+const Content = styled.main `
+  flex: 1;
+  padding: 1rem;
+  background: #f5f5f5;
+  overflow-y: auto;
+`;
+const SummaryWrapper = styled.div `
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+`;
+const SummaryCard = styled.div `
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  flex: 1;
+  text-align: center;
+`;
+const ChartsWrapper = styled.div `
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+`;
+const ChartBlock = styled.div `
+  width: 100%;
+  height: 300px;
+`;
+// --- Componente ---
+const DashboardPage = () => {
+    const [summary, setSummary] = useState({ totalFarms: 0, totalArea: 0 });
+    const [byState, setByState] = useState([]);
+    const [byCrop, setByCrop] = useState([]);
+    const [byLandUse, setByLandUse] = useState([]);
+    const navigate = useNavigate();
+    const isAuth = useAppSelector(state => state.auth.isAuthenticated);
+    useEffect(() => {
+        if (!isAuth) {
+            navigate('/login', { replace: true });
+            return;
+        }
+        const fetchData = async () => {
+            try {
+                const [sumRes, stateRes, cropRes, landRes] = await Promise.all([
+                    api.get('/dashboard/summary'),
+                    api.get('/dashboard/by-state'),
+                    api.get('/dashboard/by-crop'),
+                    api.get('/dashboard/land-use'),
+                ]);
+                setSummary(sumRes.data);
+                setByState(Array.isArray(stateRes.data)
+                    ? stateRes.data.map((s) => ({
+                        name: s.state,
+                        value: s.count,
+                    }))
+                    : []);
+                setByCrop(Array.isArray(cropRes.data)
+                    ? cropRes.data.map((c) => ({
+                        name: c.crop,
+                        value: c.count,
+                    }))
+                    : []);
+                const landData = [
+                    { name: 'Agricultável', value: landRes.data.arable },
+                    { name: 'Vegetação', value: landRes.data.vegetation },
+                ];
+                setByLandUse(landData);
+            }
+            catch (error) {
+                console.error('Erro ao carregar dados do dashboard', error);
+            }
+        };
+        fetchData();
+    }, [isAuth, navigate]);
+    return (_jsxs(_Fragment, { children: [_jsx(Navbar, {}), _jsxs(PageWrapper, { children: [_jsx(Header, { children: _jsx("h1", { children: "Dashboard" }) }), _jsxs(Content, { children: [_jsxs(SummaryWrapper, { children: [_jsxs(SummaryCard, { children: [_jsx("h2", { children: "Fazendas" }), _jsx("p", { children: summary.totalFarms })] }), _jsxs(SummaryCard, { children: [_jsx("h2", { children: "Total Hectares" }), _jsx("p", { children: summary.totalArea })] })] }), _jsxs(ChartsWrapper, { children: [_jsxs(ChartBlock, { children: [_jsx("h3", { children: "Por Estado" }), _jsx(ResponsiveContainer, { children: _jsxs(PieChart, { children: [_jsx(Pie, { data: byState, dataKey: "value", nameKey: "name", outerRadius: 100, label: true, children: byState.map((entry, idx) => (_jsx(Cell, { fill: chartColors[idx % chartColors.length] }, entry.name))) }), _jsx(Tooltip, {}), _jsx(Legend, {})] }) })] }), _jsxs(ChartBlock, { children: [_jsx("h3", { children: "Por Cultura" }), _jsx(ResponsiveContainer, { children: _jsxs(PieChart, { children: [_jsx(Pie, { data: byCrop, dataKey: "value", nameKey: "name", outerRadius: 100, label: true, children: byCrop.map((entry, idx) => (_jsx(Cell, { fill: chartColors[idx % chartColors.length] }, entry.name))) }), _jsx(Tooltip, {}), _jsx(Legend, {})] }) })] }), _jsxs(ChartBlock, { children: [_jsx("h3", { children: "Uso do Solo" }), _jsx(ResponsiveContainer, { children: _jsxs(PieChart, { children: [_jsx(Pie, { data: byLandUse, dataKey: "value", nameKey: "name", outerRadius: 100, label: true, children: byLandUse.map((entry, idx) => (_jsx(Cell, { fill: chartColors[idx % chartColors.length] }, entry.name))) }), _jsx(Tooltip, {}), _jsx(Legend, {})] }) })] })] })] })] })] }));
+};
+export default DashboardPage;
+</file>
+
+<file path="src/pages/dashboard/index.tsx">
+// src/pages/dashboard/index.tsx
+
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import api from '@/api/api';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { useNavigate } from 'react-router-dom';
+import { Navbar } from '@/components/navbar/Navbar';
+import { CropData, LandUseData, LandUseDataRaw, StateData, Summary } from '@/types/dashboard';
+
+const chartColors = ['#69eca3', '#1c7d47', '#82ca9d', '#8884d8'];
+
+// --- Styled Components ---
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background: #f5f5f5;
+  min-height: 100vh;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+`;
+
+const Content = styled.main`
+  flex: 1;
+  padding: 1rem;
+  background: #f5f5f5;
+  overflow-y: auto;
+`;
+
+const SummaryWrapper = styled.div`
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+`;
+
+const SummaryCard = styled.div`
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  flex: 1;
+  text-align: center;
+`;
+
+const ChartsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+`;
+
+const ChartBlock = styled.div`
+  width: 100%;
+  height: 300px;
+`;
+
+// --- Componente ---
+const DashboardPage: React.FC = () => {
+  const [summary, setSummary] = useState<Summary>({ totalFarms: 0, totalArea: 0 });
+  const [byState, setByState] = useState<StateData[]>([]);
+  const [byCrop, setByCrop] = useState<CropData[]>([]);
+  const [byLandUse, setByLandUse] = useState<LandUseData[]>([]);
+
+  const navigate = useNavigate();
+  const isAuth = useAppSelector(state => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (!isAuth) {
+      navigate('/login', { replace: true });
+      return;
+    }
+    const fetchData = async () => {
+      try {
+        const [sumRes, stateRes, cropRes, landRes] = await Promise.all([
+          api.get<Summary>('/dashboard/summary'),
+          api.get('/dashboard/by-state'),
+          api.get('/dashboard/by-crop'),
+          api.get<LandUseDataRaw>('/dashboard/land-use'),
+        ]);
+        setSummary(sumRes.data);
+
+        setByState(
+          Array.isArray(stateRes.data)
+            ? stateRes.data.map((s: any) => ({
+                name: s.state,
+                value: s.count,
+              }))
+            : []
+        );
+        setByCrop(
+          Array.isArray(cropRes.data)
+            ? cropRes.data.map((c: any) => ({
+                name: c.crop,
+                value: c.count,
+              }))
+            : []
+        );
+
+        const landData: LandUseData[] = [
+          { name: 'Agricultável', value: landRes.data.arable },
+          { name: 'Vegetação', value: landRes.data.vegetation },
+        ];
+        setByLandUse(landData);
+      } catch (error) {
+        console.error('Erro ao carregar dados do dashboard', error);
+      }
+    };
+    fetchData();
+  }, [isAuth, navigate]);
+
+  return (
+    <>
+      <Navbar />
+      <PageWrapper>
+        <Header>
+          <h1>Dashboard</h1>
+        </Header>
+
+        <Content>
+          <SummaryWrapper>
+            <SummaryCard>
+              <h2>Fazendas</h2>
+              <p>{summary.totalFarms}</p>
+            </SummaryCard>
+            <SummaryCard>
+              <h2>Total Hectares</h2>
+              <p>{summary.totalArea}</p>
+            </SummaryCard>
+          </SummaryWrapper>
+
+          <ChartsWrapper>
+            <ChartBlock>
+              <h3>Por Estado</h3>
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie data={byState} dataKey="value" nameKey="name" outerRadius={100} label>
+                    {byState.map((entry, idx) => (
+                      <Cell key={entry.name} fill={chartColors[idx % chartColors.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </ChartBlock>
+
+            <ChartBlock>
+              <h3>Por Cultura</h3>
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie data={byCrop} dataKey="value" nameKey="name" outerRadius={100} label>
+                    {byCrop.map((entry, idx) => (
+                      <Cell key={entry.name} fill={chartColors[idx % chartColors.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </ChartBlock>
+
+            <ChartBlock>
+              <h3>Uso do Solo</h3>
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie data={byLandUse} dataKey="value" nameKey="name" outerRadius={100} label>
+                    {byLandUse.map((entry, idx) => (
+                      <Cell key={entry.name} fill={chartColors[idx % chartColors.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </ChartBlock>
+          </ChartsWrapper>
+        </Content>
+      </PageWrapper>
+    </>
+  );
+};
+
+export default DashboardPage;
+</file>
+
+<file path="src/pages/login/index.js">
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { login } from '@/features/auth/authSlice';
+import { Input } from '@/components/atoms/Input';
+import { Button } from '@/components/atoms/Button';
+import { useNavigate } from 'react-router-dom';
+const PageWrapper = styled.div `
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+`;
+const FormContainer = styled.div `
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 320px;
+`;
+const Title = styled.h1 `
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #1c7d47;
+`;
+const ErrorMessage = styled.p `
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  text-align: center;
+`;
+const LoginPage = () => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const isAuth = useAppSelector(state => state.auth.isAuthenticated);
+    const error = useAppSelector(state => state.auth.error);
+    const [user, setUser] = useState('');
+    const [pass, setPass] = useState('');
+    useEffect(() => {
+        if (isAuth) {
+            navigate('/', { replace: true });
+        }
+    }, [isAuth, navigate]);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(login({ user, pass }));
+    };
+    return (_jsx(PageWrapper, { children: _jsxs(FormContainer, { children: [_jsx(Title, { children: "Login" }), _jsxs("form", { onSubmit: handleSubmit, children: [_jsx(Input, { label: "Usu\u00E1rio", value: user, onChange: e => setUser(e.target.value), placeholder: "admin" }), _jsx(Input, { type: "password", label: "Senha", value: pass, onChange: e => setPass(e.target.value), placeholder: "123456" }), error && _jsx(ErrorMessage, { children: error }), _jsx(Button, { type: "submit", style: { width: '100%', marginTop: '1rem' }, children: "Entrar" })] })] }) }));
+};
+export default LoginPage;
+</file>
+
+<file path="src/pages/login/index.tsx">
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { login } from '@/features/auth/authSlice';
+import { Input } from '@/components/atoms/Input';
+import { Button } from '@/components/atoms/Button';
+import { useNavigate } from 'react-router-dom';
+
+const PageWrapper = styled.div`
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+`;
+
+const FormContainer = styled.div`
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 320px;
+`;
+
+const Title = styled.h1`
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #1c7d47;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  text-align: center;
+`;
+
+const LoginPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const isAuth = useAppSelector(state => state.auth.isAuthenticated);
+  const error = useAppSelector(state => state.auth.error);
+
+  const [user, setUser] = useState('');
+  const [pass, setPass] = useState('');
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate('/', { replace: true });
+    }
+  }, [isAuth, navigate]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(login({ user, pass }));
+  };
+
+  return (
+    <PageWrapper>
+      <FormContainer>
+        <Title>Login</Title>
+        <form onSubmit={handleSubmit}>
+          <Input
+            label="Usuário"
+            value={user}
+            onChange={e => setUser(e.target.value)}
+            placeholder="admin"
+          />
+
+          <Input
+            type="password"
+            label="Senha"
+            value={pass}
+            onChange={e => setPass(e.target.value)}
+            placeholder="123456"
+          />
+
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+
+          <Button type="submit" style={{ width: '100%', marginTop: '1rem' }}>
+            Entrar
+          </Button>
+        </form>
+      </FormContainer>
+    </PageWrapper>
+  );
+};
+
+export default LoginPage;
+</file>
+
+<file path="src/pages/producer/__tests__/ProducerPage.test.js">
+import { jsx as _jsx } from "react/jsx-runtime";
+jest.mock('@/api/api', () => ({
+    __esModule: true,
+    default: {
+        get: jest.fn(),
+        post: jest.fn(),
+        patch: jest.fn(),
+        delete: jest.fn(),
+    },
+}));
+jest.mock("@/components/navbar/Navbar", () => ({
+    Navbar: () => _jsx("div", { "data-testid": "navbar", children: "Navbar" }),
+}));
+jest.mock("@/hooks/useAppSelector", () => ({
+    useAppSelector: () => true,
+}));
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import ProducerPage from "../index";
+import { Provider } from "react-redux";
+import { store } from "@/app/store";
+import { BrowserRouter } from "react-router-dom";
+import api from "@/api/api";
+const mockProducers = [];
+beforeEach(() => {
+    jest.clearAllMocks();
+    api.get.mockImplementation((url) => {
+        if (url === "/producers")
+            return Promise.resolve({ data: mockProducers });
+        if (url.startsWith("/farms?producerId="))
+            return Promise.resolve({ data: [] });
+        if (url.startsWith("/cultivations?farmId="))
+            return Promise.resolve({ data: [] });
+        if (url === "/seasons")
+            return Promise.resolve({ data: [] });
+        return Promise.resolve({ data: [] });
+    });
+    api.post.mockImplementation((url, data) => {
+        if (url === "/producers") {
+            // Apenas para garantir limpeza de array entre execuções:
+            mockProducers.length = 0;
+            // O producer terá farms no mock, mas o frontend não usa isso ao renderizar logo após cadastro
+            mockProducers.push({
+                ...data,
+                id: "1",
+                farms: [
+                    {
+                        id: "101",
+                        name: "Fazenda Teste",
+                        city: "Maringá",
+                        state: "PR",
+                        totalArea: 100,
+                        arableArea: 60,
+                        vegetationArea: 40,
+                        cultivations: [
+                            {
+                                id: "c1",
+                                crop: "Soja",
+                                seasonYear: 2025,
+                            }
+                        ]
+                    }
+                ]
+            });
+            return Promise.resolve({ data: { id: "1" } });
+        }
+        if (url === "/farms") {
+            return Promise.resolve({ data: { id: "101" } });
+        }
+        if (url === "/seasons") {
+            return Promise.resolve({ data: { id: "s1" } });
+        }
+        if (url === "/cultivations") {
+            return Promise.resolve({ data: { id: "c1" } });
+        }
+        return Promise.resolve({ data: { id: "any" } });
+    });
+    api.patch.mockResolvedValue({});
+    api.delete.mockResolvedValue({});
+});
+describe("ProducerPage - cadastro de produtor", () => {
+    it("cadastra novo produtor e visualiza no modal (deve mostrar Nenhuma fazenda cadastrada)", async () => {
+        render(_jsx(Provider, { store: store, children: _jsx(BrowserRouter, { children: _jsx(ProducerPage, {}) }) }));
+        // Abre modal de cadastro
+        fireEvent.click(screen.getByText(/adicionar/i));
+        // Preenche nome e documento
+        let textboxes = screen.getAllByRole("textbox");
+        fireEvent.change(textboxes[0], { target: { value: "Joca" } });
+        fireEvent.change(textboxes[1], { target: { value: "12345678901" } });
+        // Adiciona fazenda
+        fireEvent.click(screen.getByText(/adicionar fazenda/i));
+        await waitFor(() => {
+            const allTextboxes = screen.getAllByRole("textbox");
+            const allSpinbuttons = screen.getAllByRole("spinbutton");
+            fireEvent.change(allTextboxes.find(inp => inp.name === "farms.0.name"), { target: { value: "Fazenda Teste" } });
+            fireEvent.change(allTextboxes.find(inp => inp.name === "farms.0.city"), { target: { value: "Maringá" } });
+            fireEvent.change(allTextboxes.find(inp => inp.name === "farms.0.state"), { target: { value: "PR" } });
+            fireEvent.change(allSpinbuttons.find(inp => inp.name === "farms.0.totalArea"), { target: { value: "100" } });
+            fireEvent.change(allSpinbuttons.find(inp => inp.name === "farms.0.arableArea"), { target: { value: "60" } });
+            fireEvent.change(allSpinbuttons.find(inp => inp.name === "farms.0.vegetationArea"), { target: { value: "40" } });
+        });
+        // Adiciona cultura
+        fireEvent.click(screen.getByText(/adicionar cultura/i));
+        await waitFor(() => {
+            const cultTextboxes = screen.getAllByRole("textbox");
+            const cultSpinbuttons = screen.getAllByRole("spinbutton");
+            fireEvent.change(cultTextboxes.find(inp => inp.name === "farms.0.cultivations.0.crop"), { target: { value: "Soja" } });
+            fireEvent.change(cultSpinbuttons.find(inp => inp.name === "farms.0.cultivations.0.seasonYear"), { target: { value: "2025" } });
+        });
+        // Cadastra
+        fireEvent.click(screen.getByText(/cadastrar/i));
+        // Produtor aparece na tabela
+        await waitFor(() => {
+            expect(screen.getByText("Joca")).toBeInTheDocument();
+            expect(screen.getByText("12345678901")).toBeInTheDocument();
+        });
+        // Abre modal de visualização (botão "Visualizar" na linha do produtor)
+        const visualizarBtn = screen.getAllByRole("button").find(btn => btn.getAttribute("title")?.toLowerCase() === "visualizar");
+        expect(visualizarBtn).toBeTruthy();
+        fireEvent.click(visualizarBtn);
+        // Espera o modal e verifica que mostra Nenhuma fazenda cadastrada (comportamento do seu front real)
+        await waitFor(() => {
+            expect(screen.getByText("Nenhuma fazenda cadastrada")).toBeInTheDocument();
+        });
+    });
+});
+</file>
+
+<file path="src/pages/producer/__tests__/ProducerPage.test.tsx">
+jest.mock('@/api/api', () => ({
+  __esModule: true,
+  default: {
+    get: jest.fn(),
+    post: jest.fn(),
+    patch: jest.fn(),
+    delete: jest.fn(),
+  },
+}));
+
+jest.mock("@/components/navbar/Navbar", () => ({
+  Navbar: () => <div data-testid="navbar">Navbar</div>,
+}));
+
+jest.mock("@/hooks/useAppSelector", () => ({
+  useAppSelector: () => true,
+}));
+
+import React from "react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import ProducerPage from "../index";
+import { Provider } from "react-redux";
+import { store } from "@/app/store";
+import { BrowserRouter } from "react-router-dom";
+import api from "@/api/api";
+
+const mockProducers: any[] = [];
+
+beforeEach(() => {
+  jest.clearAllMocks();
+
+  (api.get as jest.Mock).mockImplementation((url: string) => {
+    if (url === "/producers") return Promise.resolve({ data: mockProducers });
+    if (url.startsWith("/farms?producerId=")) return Promise.resolve({ data: [] });
+    if (url.startsWith("/cultivations?farmId=")) return Promise.resolve({ data: [] });
+    if (url === "/seasons") return Promise.resolve({ data: [] });
+    return Promise.resolve({ data: [] });
+  });
+
+  (api.post as jest.Mock).mockImplementation((url: string, data: any) => {
+    if (url === "/producers") {
+      // Apenas para garantir limpeza de array entre execuções:
+      mockProducers.length = 0;
+      // O producer terá farms no mock, mas o frontend não usa isso ao renderizar logo após cadastro
+      mockProducers.push({
+        ...data,
+        id: "1",
+        farms: [
+          {
+            id: "101",
+            name: "Fazenda Teste",
+            city: "Maringá",
+            state: "PR",
+            totalArea: 100,
+            arableArea: 60,
+            vegetationArea: 40,
+            cultivations: [
+              {
+                id: "c1",
+                crop: "Soja",
+                seasonYear: 2025,
+              }
+            ]
+          }
+        ]
+      });
+      return Promise.resolve({ data: { id: "1" } });
+    }
+    if (url === "/farms") {
+      return Promise.resolve({ data: { id: "101" } });
+    }
+    if (url === "/seasons") {
+      return Promise.resolve({ data: { id: "s1" } });
+    }
+    if (url === "/cultivations") {
+      return Promise.resolve({ data: { id: "c1" } });
+    }
+    return Promise.resolve({ data: { id: "any" } });
+  });
+
+  (api.patch as jest.Mock).mockResolvedValue({});
+  (api.delete as jest.Mock).mockResolvedValue({});
+});
+
+describe("ProducerPage - cadastro de produtor", () => {
+  it("cadastra novo produtor e visualiza no modal (deve mostrar Nenhuma fazenda cadastrada)", async () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ProducerPage />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    // Abre modal de cadastro
+    fireEvent.click(screen.getByText(/adicionar/i));
+
+    // Preenche nome e documento
+    let textboxes = screen.getAllByRole("textbox");
+    fireEvent.change(textboxes[0], { target: { value: "Joca" } });
+    fireEvent.change(textboxes[1], { target: { value: "12345678901" } });
+
+    // Adiciona fazenda
+    fireEvent.click(screen.getByText(/adicionar fazenda/i));
+
+    await waitFor(() => {
+      const allTextboxes = screen.getAllByRole("textbox");
+      const allSpinbuttons = screen.getAllByRole("spinbutton");
+      fireEvent.change(allTextboxes.find(inp => inp.name === "farms.0.name")!, { target: { value: "Fazenda Teste" } });
+      fireEvent.change(allTextboxes.find(inp => inp.name === "farms.0.city")!, { target: { value: "Maringá" } });
+      fireEvent.change(allTextboxes.find(inp => inp.name === "farms.0.state")!, { target: { value: "PR" } });
+      fireEvent.change(allSpinbuttons.find(inp => inp.name === "farms.0.totalArea")!, { target: { value: "100" } });
+      fireEvent.change(allSpinbuttons.find(inp => inp.name === "farms.0.arableArea")!, { target: { value: "60" } });
+      fireEvent.change(allSpinbuttons.find(inp => inp.name === "farms.0.vegetationArea")!, { target: { value: "40" } });
+    });
+
+    // Adiciona cultura
+    fireEvent.click(screen.getByText(/adicionar cultura/i));
+    await waitFor(() => {
+      const cultTextboxes = screen.getAllByRole("textbox");
+      const cultSpinbuttons = screen.getAllByRole("spinbutton");
+      fireEvent.change(cultTextboxes.find(inp => inp.name === "farms.0.cultivations.0.crop")!, { target: { value: "Soja" } });
+      fireEvent.change(cultSpinbuttons.find(inp => inp.name === "farms.0.cultivations.0.seasonYear")!, { target: { value: "2025" } });
+    });
+
+    // Cadastra
+    fireEvent.click(screen.getByText(/cadastrar/i));
+
+    // Produtor aparece na tabela
+    await waitFor(() => {
+      expect(screen.getByText("Joca")).toBeInTheDocument();
+      expect(screen.getByText("12345678901")).toBeInTheDocument();
+    });
+
+    // Abre modal de visualização (botão "Visualizar" na linha do produtor)
+    const visualizarBtn = screen.getAllByRole("button").find(btn => btn.getAttribute("title")?.toLowerCase() === "visualizar");
+    expect(visualizarBtn).toBeTruthy();
+    fireEvent.click(visualizarBtn!);
+
+    // Espera o modal e verifica que mostra Nenhuma fazenda cadastrada (comportamento do seu front real)
+    await waitFor(() => {
+      expect(screen.getByText("Nenhuma fazenda cadastrada")).toBeInTheDocument();
+    });
+  });
+});
+</file>
+
+<file path="src/pages/producer/index.js">
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Plus, Eye, Pencil, Trash2 } from 'lucide-react';
+import api from '@/api/api';
+import { Navbar } from '@/components/navbar/Navbar';
+import ProducerForm from './ProducerForm';
+const FarmsRow = styled.div `
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+`;
+const FarmCard = styled.div `
+  background: #f9fefc;
+  border: 1px solid #e2f7e7;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.1rem;
+  min-width: 220px;
+  max-width: 300px;
+  box-shadow: 0 2px 8px rgba(40,160,80,0.05);
+  font-size: 0.96em;
+`;
+const PageWrapper = styled.div `
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background: #f5f5f5;
+  min-height: 100vh;
+`;
+const Header = styled.div `
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+`;
+const Title = styled.h1 `
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1c7d47;
+`;
+const AddButton = styled.button `
+  background: #69eca3;
+  color: #fff;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover {
+    background: #1c7d47;
+  }
+`;
+const TableWrapper = styled.div `
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  overflow-x: auto;
+`;
+const Table = styled.table `
+  width: 100%;
+  border-collapse: collapse;
+`;
+const TH = styled.th `
+  height: 2.5rem;
+  background: #f0f0f0;
+  color: #555;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+`;
+const TD = styled.td `
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: top;
+`;
+const Actions = styled.td `
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
+`;
+const IconBtn = styled.button `
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: ${({ color }) => color || '#333'};
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  font-size: 1rem;
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+const ErrorMsg = styled.div `
+  color: #d9534f;
+  margin: 1rem 0;
+  text-align: center;
+`;
+// ---- Modais ----
+const ModalOverlay = styled.div `
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+const ModalContent = styled.div `
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  min-width: 340px;
+  max-width: 98vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  position: relative;
+`;
+const ModalClose = styled.button `
+  background: #1c7d47;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  &:hover { background: #145a38; }
+`;
+const ProducerPage = () => {
+    const [producers, setProducers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [openForm, setOpenForm] = useState(false);
+    const [editProducer, setEditProducer] = useState(null);
+    const [viewProducer, setViewProducer] = useState(null);
+    const fetchProducers = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            const res = await api.get('/producers');
+            // Para cada produtor, busca as fazendas dele
+            const prodsWithFarms = await Promise.all(res.data.map(async (prod) => {
+                // Busca fazendas desse produtor (não de todos)
+                const farmsRes = await api.get(`/farms?producerId=${prod.id}`);
+                // Para cada fazenda, busca os cultivos dela
+                const farmsWithCultivations = await Promise.all(farmsRes.data.map(async (farm) => {
+                    const cultivationsRes = await api.get(`/cultivations?farmId=${farm.id}`);
+                    // Corrige caso cultivos não venham com season, exibe como array vazio se não vier
+                    const cultivations = Array.isArray(cultivationsRes.data)
+                        ? cultivationsRes.data.map(cult => ({
+                            ...cult,
+                            season: cult.season || undefined,
+                        }))
+                        : [];
+                    return { ...farm, cultivations };
+                }));
+                return { ...prod, farms: farmsWithCultivations };
+            }));
+            setProducers(prodsWithFarms);
+        }
+        catch (err) {
+            setError('Erro ao carregar produtores');
+        }
+        setLoading(false);
+    };
+    useEffect(() => {
+        fetchProducers();
+    }, []);
+    const handleDelete = async (id) => {
+        if (!window.confirm('Deseja excluir este produtor?'))
+            return;
+        try {
+            await api.delete(`/producers/${id}`);
+            fetchProducers();
+        }
+        catch (err) {
+            setError('Erro ao excluir produtor');
+        }
+    };
+    // Modal Visualizar (exibe corretamente culturas)
+    const renderViewModal = () => viewProducer && (_jsx(ModalOverlay, { children: _jsxs(ModalContent, { children: [_jsx("h2", { children: "Visualizar Produtor" }), _jsxs("div", { children: [_jsx("strong", { children: "Nome:" }), " ", viewProducer.name, _jsx("br", {}), _jsx("strong", { children: "CPF/CNPJ:" }), " ", viewProducer.document, _jsx("br", {}), _jsx("strong", { children: "Fazendas:" }), _jsx("ul", { children: viewProducer.farms.length === 0 ? (_jsx("li", { children: "Nenhuma fazenda cadastrada" })) : (viewProducer.farms.map(farm => (_jsxs("li", { style: { marginBottom: 12 }, children: [_jsx("b", { children: farm.name }), " \u2014 ", farm.city, "/", farm.state, _jsx("br", {}), "\u00C1rea total: ", farm.totalArea, " ha, Agricult\u00E1vel: ", farm.arableArea, " ha, Vegeta\u00E7\u00E3o: ", farm.vegetationArea, " ha", _jsx("br", {}), _jsx("b", { children: "Culturas:" }), farm.cultivations && farm.cultivations.length > 0 ? (_jsx("ul", { children: farm.cultivations.map(cult => _jsxs("li", { children: [cult.crop, " ", cult.season && `(Safra ${cult.season.year})`] }, cult.id)) })) : (_jsx("span", { children: " Nenhuma cultura" }))] }, farm.id)))) })] }), _jsx(ModalClose, { onClick: () => setViewProducer(null), children: "Fechar" })] }) }));
+    return (_jsxs(_Fragment, { children: [_jsx(Navbar, {}), _jsxs(PageWrapper, { children: [_jsxs(Header, { children: [_jsx(Title, { children: "Produtores" }), _jsxs(AddButton, { onClick: () => { setEditProducer(null); setOpenForm(true); }, children: [_jsx(Plus, { size: 20 }), " Adicionar"] })] }), _jsxs(TableWrapper, { children: [error && _jsx(ErrorMsg, { children: error }), _jsxs(Table, { children: [_jsx("thead", { children: _jsxs("tr", { children: [_jsx(TH, { children: "Nome" }), _jsx(TH, { children: "CPF/CNPJ" }), _jsx(TH, { children: "Fazendas" }), _jsx(TH, { children: "A\u00E7\u00F5es" })] }) }), _jsx("tbody", { children: loading ? (_jsx("tr", { children: _jsx(TD, { colSpan: 4, children: "Carregando..." }) })) : producers.length === 0 ? (_jsx("tr", { children: _jsx(TD, { colSpan: 4, children: "Nenhum produtor encontrado" }) })) : (producers.map(prod => (_jsxs("tr", { children: [_jsx(TD, { children: prod.name }), _jsx(TD, { children: prod.document }), _jsx(TD, { children: prod.farms.length === 0
+                                                        ? 'Nenhuma fazenda'
+                                                        : (_jsx(FarmsRow, { children: prod.farms.map(farm => (_jsxs(FarmCard, { children: [_jsx("b", { children: farm.name }), " ", _jsxs("span", { style: { color: '#888' }, children: ["(", farm.city, "/", farm.state, ")"] }), _jsx("br", {}), _jsxs("span", { children: ["\u00C1rea: ", farm.totalArea, "ha, Agri: ", farm.arableArea, "ha, Veg: ", farm.vegetationArea, "ha"] }), _jsx("br", {}), _jsx("b", { children: "Culturas:" }), farm.cultivations && farm.cultivations.length > 0 ? (_jsx("ul", { style: { margin: '0.25rem 0 0 1rem', padding: 0 }, children: farm.cultivations.map(cult => (_jsxs("li", { style: { fontSize: '0.95em' }, children: [cult.crop, " ", cult.season && `(Safra ${cult.season.year})`] }, cult.id))) })) : (_jsx("span", { children: " Nenhuma cultura" }))] }, farm.id))) })) }), _jsxs(Actions, { children: [_jsx(IconBtn, { color: "#0d6efd", title: "Visualizar", onClick: () => setViewProducer(prod), children: _jsx(Eye, { size: 18 }) }), _jsx(IconBtn, { color: "#1c7d47", title: "Editar", onClick: () => {
+                                                                setEditProducer(prod);
+                                                                setOpenForm(true);
+                                                            }, children: _jsx(Pencil, { size: 18 }) }), _jsx(IconBtn, { color: "#dc3545", title: "Excluir", onClick: () => handleDelete(prod.id), children: _jsx(Trash2, { size: 18 }) })] })] }, prod.id)))) })] })] }), openForm &&
+                        _jsx(ProducerForm, { producer: editProducer, onClose: () => setOpenForm(false), onSaved: () => { setOpenForm(false); fetchProducers(); } }), renderViewModal()] })] }));
+};
+export default ProducerPage;
+</file>
+
+<file path="src/pages/producer/index.tsx">
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Plus, Eye, Pencil, Trash2 } from 'lucide-react';
+import api from '@/api/api';
+import { Navbar } from '@/components/navbar/Navbar';
+import ProducerForm from './ProducerForm';
+import { Producer } from '@/types/producer';
+import { Cultivation } from '@/types/cultivation';
+import { Farm } from '@/types/farm';
+
+
+
+const FarmsRow = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+`;
+
+const FarmCard = styled.div`
+  background: #f9fefc;
+  border: 1px solid #e2f7e7;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.1rem;
+  min-width: 220px;
+  max-width: 300px;
+  box-shadow: 0 2px 8px rgba(40,160,80,0.05);
+  font-size: 0.96em;
+`;
+
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background: #f5f5f5;
+  min-height: 100vh;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+`;
+
+const Title = styled.h1`
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1c7d47;
+`;
+
+const AddButton = styled.button`
+  background: #69eca3;
+  color: #fff;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover {
+    background: #1c7d47;
+  }
+`;
+
+const TableWrapper = styled.div`
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  overflow-x: auto;
+`;
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+`;
+
+const TH = styled.th`
+  height: 2.5rem;
+  background: #f0f0f0;
+  color: #555;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+`;
+
+const TD = styled.td`
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: top;
+`;
+
+const Actions = styled.td`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+const IconBtn = styled.button<{ color?: string }>`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: ${({ color }) => color || '#333'};
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  font-size: 1rem;
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
+const ErrorMsg = styled.div`
+  color: #d9534f;
+  margin: 1rem 0;
+  text-align: center;
+`;
+
+// ---- Modais ----
+const ModalOverlay = styled.div`
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+const ModalContent = styled.div`
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  min-width: 340px;
+  max-width: 98vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  position: relative;
+`;
+const ModalClose = styled.button`
+  background: #1c7d47;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  &:hover { background: #145a38; }
+`;
+
+
+
+const ProducerPage: React.FC = () => {
+    const [producers, setProducers] = useState<Producer[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string>('');
+    const [openForm, setOpenForm] = useState(false);
+    const [editProducer, setEditProducer] = useState<Producer | null>(null);
+    const [viewProducer, setViewProducer] = useState<Producer | null>(null);
+  
+    const fetchProducers = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const res = await api.get<Producer[]>('/producers');
+        // Para cada produtor, busca as fazendas dele
+        const prodsWithFarms = await Promise.all(
+          res.data.map(async (prod) => {
+            // Busca fazendas desse produtor (não de todos)
+            const farmsRes = await api.get<Farm[]>(`/farms?producerId=${prod.id}`);
+            // Para cada fazenda, busca os cultivos dela
+            const farmsWithCultivations = await Promise.all(
+              farmsRes.data.map(async (farm) => {
+                const cultivationsRes = await api.get<Cultivation[]>(`/cultivations?farmId=${farm.id}`);
+                // Corrige caso cultivos não venham com season, exibe como array vazio se não vier
+                const cultivations = Array.isArray(cultivationsRes.data)
+                  ? cultivationsRes.data.map(cult => ({
+                      ...cult,
+                      season: cult.season || undefined,
+                    }))
+                  : [];
+                return { ...farm, cultivations };
+              })
+            );
+            return { ...prod, farms: farmsWithCultivations };
+          })
+        );
+        setProducers(prodsWithFarms);
+      } catch (err: any) {
+        setError('Erro ao carregar produtores');
+      }
+      setLoading(false);
+    };
+  
+    useEffect(() => {
+      fetchProducers();
+    }, []);
+  
+    const handleDelete = async (id: string) => {
+      if (!window.confirm('Deseja excluir este produtor?')) return;
+      try {
+        await api.delete(`/producers/${id}`);
+        fetchProducers();
+      } catch (err: any) {
+        setError('Erro ao excluir produtor');
+      }
+    };
+  
+    // Modal Visualizar (exibe corretamente culturas)
+    const renderViewModal = () =>
+      viewProducer && (
+        <ModalOverlay>
+          <ModalContent>
+            <h2>Visualizar Produtor</h2>
+            <div>
+              <strong>Nome:</strong> {viewProducer.name}<br />
+              <strong>CPF/CNPJ:</strong> {viewProducer.document}<br />
+              <strong>Fazendas:</strong>
+              <ul>
+                {viewProducer.farms.length === 0 ? (
+                  <li>Nenhuma fazenda cadastrada</li>
+                ) : (
+                  viewProducer.farms.map(farm => (
+                    <li key={farm.id} style={{ marginBottom: 12 }}>
+                      <b>{farm.name}</b> — {farm.city}/{farm.state}<br />
+                      Área total: {farm.totalArea} ha, Agricultável: {farm.arableArea} ha, Vegetação: {farm.vegetationArea} ha
+                      <br />
+                      <b>Culturas:</b>
+                      {farm.cultivations && farm.cultivations.length > 0 ? (
+                        <ul>
+                          {farm.cultivations.map(cult =>
+                            <li key={cult.id}>
+                              {cult.crop} {cult.season && `(Safra ${cult.season.year})`}
+                            </li>
+                          )}
+                        </ul>
+                      ) : (
+                        <span> Nenhuma cultura</span>
+                      )}
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>
+            <ModalClose onClick={() => setViewProducer(null)}>Fechar</ModalClose>
+          </ModalContent>
+        </ModalOverlay>
+      );
+  
+    return (
+      <>
+        <Navbar />
+        <PageWrapper>
+          <Header>
+            <Title>Produtores</Title>
+            <AddButton onClick={() => { setEditProducer(null); setOpenForm(true); }}>
+              <Plus size={20} /> Adicionar
+            </AddButton>
+          </Header>
+  
+          <TableWrapper>
+            {error && <ErrorMsg>{error}</ErrorMsg>}
+            <Table>
+              <thead>
+                <tr>
+                  <TH>Nome</TH>
+                  <TH>CPF/CNPJ</TH>
+                  <TH>Fazendas</TH>
+                  <TH>Ações</TH>
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><TD colSpan={4}>Carregando...</TD></tr>
+                ) : producers.length === 0 ? (
+                  <tr><TD colSpan={4}>Nenhum produtor encontrado</TD></tr>
+                ) : (
+                  producers.map(prod => (
+                    <tr key={prod.id}>
+                      <TD>{prod.name}</TD>
+                      <TD>{prod.document}</TD>
+                      <TD>
+  {prod.farms.length === 0
+    ? 'Nenhuma fazenda'
+    : (
+      <FarmsRow>
+        {prod.farms.map(farm => (
+          <FarmCard key={farm.id}>
+            <b>{farm.name}</b> <span style={{ color: '#888' }}>({farm.city}/{farm.state})</span><br />
+            <span>Área: {farm.totalArea}ha, Agri: {farm.arableArea}ha, Veg: {farm.vegetationArea}ha</span>
+            <br />
+            <b>Culturas:</b>
+            {farm.cultivations && farm.cultivations.length > 0 ? (
+              <ul style={{ margin: '0.25rem 0 0 1rem', padding: 0 }}>
+                {farm.cultivations.map(cult => (
+                  <li key={cult.id} style={{ fontSize: '0.95em' }}>
+                    {cult.crop} {cult.season && `(Safra ${cult.season.year})`}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <span> Nenhuma cultura</span>
+            )}
+          </FarmCard>
+        ))}
+      </FarmsRow>
+    )
+  }
+</TD>
+                      <Actions>
+                        <IconBtn color="#0d6efd" title="Visualizar" onClick={() => setViewProducer(prod)}>
+                          <Eye size={18} />
+                        </IconBtn>
+                        <IconBtn color="#1c7d47" title="Editar" onClick={() => {
+                          setEditProducer(prod);
+                          setOpenForm(true);
+                        }}>
+                          <Pencil size={18} />
+                        </IconBtn>
+                        <IconBtn color="#dc3545" title="Excluir" onClick={() => handleDelete(prod.id)}>
+                          <Trash2 size={18} />
+                        </IconBtn>
+                      </Actions>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </Table>
+          </TableWrapper>
+          {openForm &&
+            <ProducerForm
+              producer={editProducer}
+              onClose={() => setOpenForm(false)}
+              onSaved={() => { setOpenForm(false); fetchProducers(); }}
+            />
+          }
+          {renderViewModal()}
+        </PageWrapper>
+      </>
+    );
+  };
+  
+  export default ProducerPage;
+</file>
+
+<file path="src/pages/producer/ProducerForm.js">
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useEffect } from 'react';
+import styled from 'styled-components';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import api from '@/api/api';
+import { Input } from '@/components/atoms/Input';
+import { Button } from '@/components/atoms/Button';
+import { Plus, Trash2 } from 'lucide-react';
+// --- Validação
+const cpfCnpjRegex = /^(\d{11}|\d{14})$/;
+const CultivationSchema = z.object({
+    id: z.string().optional(),
+    crop: z.string().min(1, "Cultura obrigatória"),
+    seasonYear: z.coerce.number().min(2000, "Ano inválido"),
+});
+const FarmSchema = z.object({
+    id: z.string().optional(),
+    name: z.string().min(1, "Nome obrigatório"),
+    city: z.string().min(1, "Cidade obrigatória"),
+    state: z.string().length(2, "UF deve ter 2 letras"),
+    totalArea: z.coerce.number().min(0.1, "Total deve ser > 0"),
+    arableArea: z.coerce.number().min(0, "Mínimo 0"),
+    vegetationArea: z.coerce.number().min(0, "Mínimo 0"),
+    cultivations: z.array(CultivationSchema).optional().default([]),
+}).superRefine((data, ctx) => {
+    if ((data.arableArea + data.vegetationArea) > data.totalArea) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Soma das áreas excede total.",
+            path: ['arableArea'],
+        });
+    }
+});
+const FormSchema = z.object({
+    name: z.string().min(2, "Nome obrigatório"),
+    document: z.string().regex(cpfCnpjRegex, "CPF/CNPJ deve ter 11 ou 14 dígitos"),
+    farms: z.array(FarmSchema).default([]),
+});
+const ProducerForm = ({ producer, onClose, onSaved }) => {
+    const { register, control, handleSubmit, reset, formState: { errors, isSubmitting }, } = useForm({
+        resolver: zodResolver(FormSchema),
+        defaultValues: producer
+            ? {
+                name: producer.name,
+                document: producer.document,
+                farms: (producer.farms || []).map((f) => ({
+                    ...f,
+                    cultivations: f.cultivations?.map((c) => ({
+                        id: c.id,
+                        crop: c.crop,
+                        seasonYear: c.season?.year,
+                    })) || [],
+                })),
+            }
+            : { name: '', document: '', farms: [] },
+    });
+    // Array de fazendas
+    const { fields: farmFields, append: appendFarm, remove: removeFarm } = useFieldArray({
+        control,
+        name: "farms",
+    });
+    useEffect(() => {
+        if (producer) {
+            reset({
+                name: producer.name,
+                document: producer.document,
+                farms: (producer.farms || []).map((f) => ({
+                    ...f,
+                    cultivations: f.cultivations?.map((c) => ({
+                        id: c.id,
+                        crop: c.crop,
+                        seasonYear: c.season?.year,
+                    })) || [],
+                })),
+            });
+        }
+        else {
+            reset({ name: '', document: '', farms: [] });
+        }
+        // eslint-disable-next-line
+    }, [producer]);
+    const onSubmit = async (data) => {
+        try {
+            let prodId = producer?.id;
+            if (!producer) {
+                const res = await api.post('/producers', {
+                    name: data.name,
+                    document: data.document,
+                });
+                prodId = res.data.id;
+            }
+            else {
+                await api.patch(`/producers/${producer.id}`, {
+                    name: data.name,
+                    document: data.document,
+                });
+            }
+            // Remover fazendas excluídas (se edição)
+            if (producer && producer.farms) {
+                const removedFarms = producer.farms.filter((f) => !data.farms?.find((nf) => nf.id === f.id));
+                for (const f of removedFarms) {
+                    await api.delete(`/farms/${f.id}`);
+                }
+            }
+            // Salvar/atualizar fazendas e cultivos
+            for (const [idx, farm] of (data.farms || []).entries()) {
+                // Remover 'id' e 'cultivations' do payload da fazenda
+                const { id: farmIdToRemove, cultivations, ...farmData } = farm;
+                if (!farm.id) {
+                    const newFarm = await api.post('/farms', { ...farmData, producerId: prodId });
+                    data.farms[idx].id = newFarm.data.id;
+                }
+                else {
+                    await api.patch(`/farms/${farm.id}`, { ...farmData, producerId: prodId });
+                }
+                // Remover cultivos antigos (se edição)
+                const farmOrig = producer?.farms?.find((f) => f.id === farm.id);
+                if (farmOrig) {
+                    const removedCult = (farmOrig.cultivations || []).filter((c) => !farm.cultivations?.find((nc) => nc.id === c.id));
+                    for (const cult of removedCult) {
+                        await api.delete(`/cultivations/${cult.id}`);
+                    }
+                }
+                // Salvar/atualizar cultivos
+                for (const [cidx, cult] of (farm.cultivations || []).entries()) {
+                    // Buscar ou criar seasonId
+                    let seasonId = null;
+                    const seasonYear = cult.seasonYear;
+                    const seasons = await api.get('/seasons');
+                    const matchSeason = seasons.data.find(s => s.year === seasonYear);
+                    if (matchSeason) {
+                        seasonId = matchSeason.id;
+                    }
+                    else {
+                        const newS = await api.post('/seasons', { year: seasonYear });
+                        seasonId = newS.data.id;
+                    }
+                    // Remover id e seasonYear ANTES do envio!
+                    const { id: cultIdToRemove, seasonYear: seasonYearToRemove, ...cultivationData } = cult;
+                    if (!cult.id) {
+                        // CRIAÇÃO DO CULTIVO
+                        const newCult = await api.post('/cultivations', {
+                            ...cultivationData,
+                            farmId: data.farms[idx].id,
+                            seasonId,
+                        });
+                        data.farms[idx].cultivations[cidx].id = newCult.data.id;
+                    }
+                    else {
+                        // EDIÇÃO DO CULTIVO
+                        await api.patch(`/cultivations/${cult.id}`, {
+                            ...cultivationData,
+                            seasonId,
+                        });
+                    }
+                }
+            }
+            onSaved();
+        }
+        catch (e) {
+            alert('Erro ao salvar: ' + (e?.response?.data?.message || e.message));
+        }
+    };
+    return (_jsx(FormModal, { children: _jsxs(FormBox, { onSubmit: handleSubmit(onSubmit), children: [_jsx(CloseBtn, { type: "button", onClick: onClose, children: "Fechar" }), _jsx("h2", { children: producer ? 'Editar Produtor' : 'Novo Produtor' }), _jsx(Input, { label: "Nome do produtor", ...register('name'), error: errors.name?.message }), _jsx(Input, { label: "CPF ou CNPJ", ...register('document'), error: errors.document?.message }), _jsxs(Section, { children: [_jsxs("div", { style: { display: 'flex', justifyContent: 'space-between' }, children: [_jsx("b", { children: "Fazendas" }), _jsxs(Button, { type: "button", onClick: () => appendFarm({
+                                        name: '',
+                                        city: '',
+                                        state: '',
+                                        totalArea: 1,
+                                        arableArea: 0,
+                                        vegetationArea: 0,
+                                        cultivations: [],
+                                    }), children: [_jsx(Plus, { size: 16 }), " Adicionar fazenda"] })] }), farmFields.length === 0 && _jsx("div", { style: { color: '#aaa', margin: 8 }, children: "Nenhuma fazenda adicionada" }), farmFields.map((farm, idx) => (_jsx(FarmItem, { nestIndex: idx, control: control, register: register, errors: errors, removeFarm: removeFarm }, farm.id || idx)))] }), _jsx(Button, { type: "submit", disabled: isSubmitting, children: producer ? 'Salvar' : 'Cadastrar' })] }) }));
+};
+export default ProducerForm;
+// ------------------- FarmItem COMPONENT (cada fazenda seu useFieldArray de culturas) -------------------
+const FarmBlock = styled.div `
+  border: 1px solid #d7fbe1;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #f7fffa;
+`;
+const CultivationBlock = styled.div `
+  background: #fff;
+  border-radius: 5px;
+  padding: 0.5rem 1rem 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-left: 4px solid #69eca3;
+`;
+const ErrorMsg = styled.div `
+  color: #d9534f;
+  margin: 0.5rem 0;
+`;
+const Row = styled.div `
+  display: flex;
+  gap: 0.5rem;
+`;
+function FarmItem({ nestIndex, control, register, errors, removeFarm }) {
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: `farms.${nestIndex}.cultivations`,
+    });
+    return (_jsxs(FarmBlock, { children: [_jsxs(Row, { children: [_jsx(Input, { label: "Nome", ...register(`farms.${nestIndex}.name`), error: errors?.farms?.[nestIndex]?.name?.message }), _jsx(Input, { label: "Cidade", ...register(`farms.${nestIndex}.city`), error: errors?.farms?.[nestIndex]?.city?.message }), _jsx(Input, { label: "UF", maxLength: 2, ...register(`farms.${nestIndex}.state`), error: errors?.farms?.[nestIndex]?.state?.message })] }), _jsxs(Row, { children: [_jsx(Input, { label: "\u00C1rea Total (ha)", type: "number", step: 0.1, ...register(`farms.${nestIndex}.totalArea`), error: errors?.farms?.[nestIndex]?.totalArea?.message }), _jsx(Input, { label: "Agricult\u00E1vel (ha)", type: "number", step: 0.1, ...register(`farms.${nestIndex}.arableArea`), error: errors?.farms?.[nestIndex]?.arableArea?.message }), _jsx(Input, { label: "Vegeta\u00E7\u00E3o (ha)", type: "number", step: 0.1, ...register(`farms.${nestIndex}.vegetationArea`), error: errors?.farms?.[nestIndex]?.vegetationArea?.message })] }), errors?.farms?.[nestIndex]?.root && (_jsx(ErrorMsg, { children: errors?.farms?.[nestIndex]?.root?.message })), _jsxs(Section, { children: [_jsx("b", { children: "Culturas Plantadas" }), _jsxs(Button, { type: "button", onClick: () => append({ crop: '', seasonYear: new Date().getFullYear() }), children: [_jsx(Plus, { size: 14 }), " Adicionar cultura"] }), fields.length === 0 &&
+                        _jsx("div", { style: { color: '#aaa', margin: 8 }, children: "Nenhuma cultura" }), fields.map((cult, cidx) => (_jsx(CultivationBlock, { children: _jsxs(Row, { children: [_jsx(Input, { label: "Cultura", ...register(`farms.${nestIndex}.cultivations.${cidx}.crop`), error: errors?.farms?.[nestIndex]?.cultivations?.[cidx]?.crop?.message }), _jsx(Input, { label: "Safra (ano)", type: "number", ...register(`farms.${nestIndex}.cultivations.${cidx}.seasonYear`), error: errors?.farms?.[nestIndex]?.cultivations?.[cidx]?.seasonYear?.message }), _jsx(IconBtn, { type: "button", title: "Remover cultura", onClick: () => remove(cidx), children: _jsx(Trash2, { size: 16 }) })] }) }, cult.id || cidx)))] }), _jsx(Button, { variant: "secondary", type: "button", style: { marginTop: 12 }, onClick: () => removeFarm(nestIndex), children: "Remover fazenda" })] }));
+}
+// --- Styles ---
+const FormModal = styled.div `
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.25);
+  display: flex; align-items: center; justify-content: center; z-index:1001;
+`;
+const FormBox = styled.form `
+  background: #fff;
+  border-radius: 0.5rem;
+  min-width: 380px;
+  max-width: 98vw;
+  max-height: 90vh;            
+  padding: 2rem 2rem 1rem 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  overflow-y: auto;          
+`;
+const CloseBtn = styled.button `
+  background: #1c7d47; color:#fff; border: none; border-radius: 0.25rem;
+  padding: 0.35rem 1rem; position:absolute; right:16px; top:12px; font-weight:600;
+  cursor: pointer;
+`;
+const Section = styled.div `
+  margin-top: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid #eee;
+`;
+const IconBtn = styled.button `
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  &:hover { color: #dc3545; }
+`;
+</file>
+
+<file path="src/pages/producer/ProducerForm.tsx">
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import api from '@/api/api';
+import { Input } from '@/components/atoms/Input';
+import { Button } from '@/components/atoms/Button';
+import { Plus, Trash2 } from 'lucide-react';
+
+// --- Validação
+const cpfCnpjRegex = /^(\d{11}|\d{14})$/;
+const CultivationSchema = z.object({
+  id: z.string().optional(),
+  crop: z.string().min(1, "Cultura obrigatória"),
+  seasonYear: z.coerce.number().min(2000, "Ano inválido"),
+});
+const FarmSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().min(1, "Nome obrigatório"),
+  city: z.string().min(1, "Cidade obrigatória"),
+  state: z.string().length(2, "UF deve ter 2 letras"),
+  totalArea: z.coerce.number().min(0.1, "Total deve ser > 0"),
+  arableArea: z.coerce.number().min(0, "Mínimo 0"),
+  vegetationArea: z.coerce.number().min(0, "Mínimo 0"),
+  cultivations: z.array(CultivationSchema).optional().default([]),
+}).superRefine((data, ctx) => {
+  if ((data.arableArea + data.vegetationArea) > data.totalArea) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Soma das áreas excede total.",
+      path: ['arableArea'],
+    });
+  }
+});
+const FormSchema = z.object({
+  name: z.string().min(2, "Nome obrigatório"),
+  document: z.string().regex(cpfCnpjRegex, "CPF/CNPJ deve ter 11 ou 14 dígitos"),
+  farms: z.array(FarmSchema).default([]),
+});
+type FormValues = z.infer<typeof FormSchema>;
+
+type Props = {
+  producer?: any;
+  onClose: () => void;
+  onSaved: () => void;
+};
+
+const ProducerForm: React.FC<Props> = ({ producer, onClose, onSaved }) => {
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: producer
+      ? {
+          name: producer.name,
+          document: producer.document,
+          farms: (producer.farms || []).map((f: any) => ({
+            ...f,
+            cultivations: f.cultivations?.map((c: any) => ({
+              id: c.id,
+              crop: c.crop,
+              seasonYear: c.season?.year,
+            })) || [],
+          })),
+        }
+      : { name: '', document: '', farms: [] },
+  });
+
+  // Array de fazendas
+  const { fields: farmFields, append: appendFarm, remove: removeFarm } = useFieldArray({
+    control,
+    name: "farms",
+  });
+
+  useEffect(() => {
+    if (producer) {
+      reset({
+        name: producer.name,
+        document: producer.document,
+        farms: (producer.farms || []).map((f: any) => ({
+          ...f,
+          cultivations: f.cultivations?.map((c: any) => ({
+            id: c.id,
+            crop: c.crop,
+            seasonYear: c.season?.year,
+          })) || [],
+        })),
+      });
+    } else {
+      reset({ name: '', document: '', farms: [] });
+    }
+    // eslint-disable-next-line
+  }, [producer]);
+
+  const onSubmit = async (data: FormValues) => {
+    try {
+      let prodId = producer?.id;
+      if (!producer) {
+        const res = await api.post('/producers', {
+          name: data.name,
+          document: data.document,
+        });
+        prodId = res.data.id;
+      } else {
+        await api.patch(`/producers/${producer.id}`, {
+          name: data.name,
+          document: data.document,
+        });
+      }
+      // Remover fazendas excluídas (se edição)
+      if (producer && producer.farms) {
+        const removedFarms = producer.farms.filter((f: any) =>
+          !data.farms?.find((nf) => nf.id === f.id)
+        );
+        for (const f of removedFarms) {
+          await api.delete(`/farms/${f.id}`);
+        }
+      }
+      // Salvar/atualizar fazendas e cultivos
+      for (const [idx, farm] of (data.farms || []).entries()) {
+        // Remover 'id' e 'cultivations' do payload da fazenda
+        const { id: farmIdToRemove, cultivations, ...farmData } = farm;
+        if (!farm.id) {
+          const newFarm = await api.post('/farms', { ...farmData, producerId: prodId });
+          data.farms![idx].id = newFarm.data.id;
+        } else {
+          await api.patch(`/farms/${farm.id}`, { ...farmData, producerId: prodId });
+        }
+        // Remover cultivos antigos (se edição)
+        const farmOrig = producer?.farms?.find((f: any) => f.id === farm.id);
+        if (farmOrig) {
+          const removedCult = (farmOrig.cultivations || []).filter((c: any) =>
+            !farm.cultivations?.find((nc) => nc.id === c.id)
+          );
+          for (const cult of removedCult) {
+            await api.delete(`/cultivations/${cult.id}`);
+          }
+        }
+        // Salvar/atualizar cultivos
+        for (const [cidx, cult] of (farm.cultivations || []).entries()) {
+            // Buscar ou criar seasonId
+            let seasonId: string | null = null;
+            const seasonYear = cult.seasonYear;
+            const seasons = await api.get('/seasons');
+            const matchSeason = (seasons.data as any[]).find(s => s.year === seasonYear);
+            if (matchSeason) {
+              seasonId = matchSeason.id;
+            } else {
+              const newS = await api.post('/seasons', { year: seasonYear });
+              seasonId = newS.data.id;
+            }
+            // Remover id e seasonYear ANTES do envio!
+            const { id: cultIdToRemove, seasonYear: seasonYearToRemove, ...cultivationData } = cult;
+            if (!cult.id) {
+              // CRIAÇÃO DO CULTIVO
+              const newCult = await api.post('/cultivations', {
+                ...cultivationData,
+                farmId: data.farms![idx].id,
+                seasonId,
+              });
+              data.farms![idx].cultivations![cidx].id = newCult.data.id;
+            } else {
+              // EDIÇÃO DO CULTIVO
+              await api.patch(`/cultivations/${cult.id}`, {
+                ...cultivationData,
+                seasonId,
+              });
+            }
+          }
+      }
+      onSaved();
+    } catch (e: any) {
+      alert('Erro ao salvar: ' + (e?.response?.data?.message || e.message));
+    }
+  };
+
+  return (
+    <FormModal>
+      <FormBox onSubmit={handleSubmit(onSubmit)}>
+        <CloseBtn type="button" onClick={onClose}>Fechar</CloseBtn>
+        <h2>{producer ? 'Editar Produtor' : 'Novo Produtor'}</h2>
+        <Input label="Nome do produtor" {...register('name')} error={errors.name?.message} />
+        <Input label="CPF ou CNPJ" {...register('document')} error={errors.document?.message} />
+
+        <Section>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <b>Fazendas</b>
+            <Button type="button" onClick={() => appendFarm({
+              name: '',
+              city: '',
+              state: '',
+              totalArea: 1,
+              arableArea: 0,
+              vegetationArea: 0,
+              cultivations: [],
+            })}>
+              <Plus size={16} /> Adicionar fazenda
+            </Button>
+          </div>
+          {farmFields.length === 0 && <div style={{ color: '#aaa', margin: 8 }}>Nenhuma fazenda adicionada</div>}
+          {farmFields.map((farm, idx) => (
+            <FarmItem
+              key={farm.id || idx}
+              nestIndex={idx}
+              control={control}
+              register={register}
+              errors={errors}
+              removeFarm={removeFarm}
+            />
+          ))}
+        </Section>
+
+        <Button type="submit" disabled={isSubmitting}>{producer ? 'Salvar' : 'Cadastrar'}</Button>
+      </FormBox>
+    </FormModal>
+  );
+};
+
+export default ProducerForm;
+
+// ------------------- FarmItem COMPONENT (cada fazenda seu useFieldArray de culturas) -------------------
+const FarmBlock = styled.div`
+  border: 1px solid #d7fbe1;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #f7fffa;
+`;
+
+const CultivationBlock = styled.div`
+  background: #fff;
+  border-radius: 5px;
+  padding: 0.5rem 1rem 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-left: 4px solid #69eca3;
+`;
+
+const ErrorMsg = styled.div`
+  color: #d9534f;
+  margin: 0.5rem 0;
+`;
+
+const Row = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`;
+
+function FarmItem({ nestIndex, control, register, errors, removeFarm }: any) {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: `farms.${nestIndex}.cultivations`,
+  });
+
+  return (
+    <FarmBlock>
+      <Row>
+        <Input label="Nome" {...register(`farms.${nestIndex}.name`)} error={errors?.farms?.[nestIndex]?.name?.message} />
+        <Input label="Cidade" {...register(`farms.${nestIndex}.city`)} error={errors?.farms?.[nestIndex]?.city?.message} />
+        <Input label="UF" maxLength={2} {...register(`farms.${nestIndex}.state`)} error={errors?.farms?.[nestIndex]?.state?.message} />
+      </Row>
+      <Row>
+        <Input label="Área Total (ha)" type="number" step={0.1} {...register(`farms.${nestIndex}.totalArea`)} error={errors?.farms?.[nestIndex]?.totalArea?.message} />
+        <Input label="Agricultável (ha)" type="number" step={0.1} {...register(`farms.${nestIndex}.arableArea`)} error={errors?.farms?.[nestIndex]?.arableArea?.message} />
+        <Input label="Vegetação (ha)" type="number" step={0.1} {...register(`farms.${nestIndex}.vegetationArea`)} error={errors?.farms?.[nestIndex]?.vegetationArea?.message} />
+      </Row>
+      {errors?.farms?.[nestIndex]?.root && (
+        <ErrorMsg>{errors?.farms?.[nestIndex]?.root?.message}</ErrorMsg>
+      )}
+      {/* Cultivos */}
+      <Section>
+        <b>Culturas Plantadas</b>
+        <Button type="button" onClick={() => append({ crop: '', seasonYear: new Date().getFullYear() })}>
+          <Plus size={14} /> Adicionar cultura
+        </Button>
+        {fields.length === 0 &&
+          <div style={{ color: '#aaa', margin: 8 }}>Nenhuma cultura</div>}
+        {fields.map((cult, cidx) => (
+          <CultivationBlock key={cult.id || cidx}>
+            <Row>
+              <Input label="Cultura" {...register(`farms.${nestIndex}.cultivations.${cidx}.crop`)} error={errors?.farms?.[nestIndex]?.cultivations?.[cidx]?.crop?.message} />
+              <Input label="Safra (ano)" type="number" {...register(`farms.${nestIndex}.cultivations.${cidx}.seasonYear`)} error={errors?.farms?.[nestIndex]?.cultivations?.[cidx]?.seasonYear?.message} />
+              <IconBtn type="button" title="Remover cultura" onClick={() => remove(cidx)}>
+                <Trash2 size={16} />
+              </IconBtn>
+            </Row>
+          </CultivationBlock>
+        ))}
+      </Section>
+      <Button variant="secondary" type="button" style={{ marginTop: 12 }} onClick={() => removeFarm(nestIndex)}>
+        Remover fazenda
+      </Button>
+    </FarmBlock>
+  );
+}
+
+// --- Styles ---
+const FormModal = styled.div`
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.25);
+  display: flex; align-items: center; justify-content: center; z-index:1001;
+`;
+const FormBox = styled.form`
+  background: #fff;
+  border-radius: 0.5rem;
+  min-width: 380px;
+  max-width: 98vw;
+  max-height: 90vh;            
+  padding: 2rem 2rem 1rem 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  overflow-y: auto;          
+`;
+
+const CloseBtn = styled.button`
+  background: #1c7d47; color:#fff; border: none; border-radius: 0.25rem;
+  padding: 0.35rem 1rem; position:absolute; right:16px; top:12px; font-weight:600;
+  cursor: pointer;
+`;
+const Section = styled.div`
+  margin-top: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid #eee;
+`;
+const IconBtn = styled.button`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  &:hover { color: #dc3545; }
+`;
+</file>
+
+<file path="src/routes/AppRoutes.js">
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import LoginPage from '@/pages/login';
+import DashboardPage from '@/pages/dashboard';
+import ProducerPage from '@/pages/producer';
+const Private = ({ children }) => {
+    const isAuth = useAppSelector(s => s.auth.isAuthenticated);
+    return isAuth ? children : _jsx(Navigate, { to: "/login", replace: true });
+};
+export const AppRoutes = () => (_jsxs(Routes, { children: [_jsx(Route, { path: "/login", element: _jsx(LoginPage, {}) }), _jsx(Route, { path: "/", element: _jsx(Private, { children: _jsx(DashboardPage, {}) }) }), _jsx(Route, { path: "/producer", element: _jsx(Private, { children: _jsx(ProducerPage, {}) }) }), _jsx(Route, { path: "*", element: _jsx(Navigate, { to: "/", replace: true }) })] }));
+</file>
+
+<file path="src/routes/AppRoutes.tsx">
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import LoginPage from '@/pages/login';
+import DashboardPage from '@/pages/dashboard';
+import ProducerPage from '@/pages/producer';
+
+
+const Private = ({ children }: { children: JSX.Element }) => {
+  const isAuth = useAppSelector(s => s.auth.isAuthenticated);
+  return isAuth ? children : <Navigate to="/login" replace />;
+};
+
+export const AppRoutes = () => (
+  <Routes>
+    <Route path="/login" element={<LoginPage />} />
+
+    <Route path="/" element={<Private><DashboardPage/></Private>} />
+    <Route path="/producer" element={<Private><ProducerPage/></Private>} />
+    
+    {/* fallback */}
+    <Route path="*" element={<Navigate to="/" replace />} />
+  </Routes>
+);
+</file>
+
+<file path="src/styles/global.css">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+</file>
+
+<file path="src/types/cultivation.js">
+export {};
+</file>
+
+<file path="src/types/cultivation.ts">
+export type Cultivation = {
+  id: string;
+  crop: string;
+  season?: { id: string; year: number };
+};
+</file>
+
+<file path="src/types/dashboard.js">
+export {};
+</file>
+
+<file path="src/types/dashboard.ts">
+// Types for API data
+export interface Summary {
+  totalFarms: number;
+  totalArea: number;
+}
+export interface StateData {
+  name: string;
+  value: number;
+}
+export interface CultureData {
+  name: string;
+  value: number;
+}
+export interface LandUseData {
+  name: string;
+  value: number;
+}
+
+export interface StateData {
+  name: string;
+  value: number;
+}
+
+export interface CropData {
+  name: string;
+  value: number;
+}
+
+export interface LandUseDataRaw {
+  arable: number;
+  vegetation: number;
+}
+export interface LandUseData {
+  name: string;
+  value: number;
+}
+</file>
+
+<file path="src/types/farm.js">
+export {};
+</file>
+
+<file path="src/types/farm.ts">
+import { Cultivation } from "./cultivation";
+
+export type Farm = {
+  id: string;
+  name: string;
+  city: string;
+  state: string;
+  totalArea: number;
+  arableArea: number;
+  vegetationArea: number;
+  cultivations: Cultivation[];
+};
+</file>
+
+<file path="src/types/producer.js">
+export {};
+</file>
+
+<file path="src/types/producer.ts">
+import { Farm } from "./farm";
+
+export type Producer = {
+  id: string;
+  document: string;
+  name: string;
+  farms: Farm[];
+};
+</file>
+
+<file path="src/vite-env.d.ts">
+/// <reference types="vite/client" />
+</file>
+
+<file path="tsconfig.app.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["src"]
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "strict": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    
+    "baseUrl": ".",                     
+    "paths": {
+      "@/*": ["src/*"]                  
+    },
+    "types": ["jest", "@testing-library/jest-dom"]    
+  },
+  "include": ["src", "jest.setup.js"]
+}
+</file>
+
+<file path="tsconfig.node.json">
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["vite.config.ts"]
+}
+</file>
+
+<file path="tsconfig.tsbuildinfo">
+{"root":["./src/main.tsx","./src/vite-env.d.ts","./src/api/api.ts","./src/app/store.ts","./src/components/atoms/button.tsx","./src/components/atoms/input.tsx","./src/components/navbar/navbar.tsx","./src/features/auth/authslice.ts","./src/features/producers/producersslice.ts","./src/hooks/useappdispatch.ts","./src/hooks/useappselector.ts","./src/pages/dashboard/index.tsx","./src/pages/dashboard/__tests__/dashboardpage.test.tsx","./src/pages/login/index.tsx","./src/pages/producer/producerform.tsx","./src/pages/producer/index.tsx","./src/pages/producer/__tests__/producerpage.test.tsx","./src/routes/approutes.tsx","./src/types/cultivation.ts","./src/types/dashboard.ts","./src/types/farm.ts","./src/types/producer.ts"],"errors":true,"version":"5.8.3"}
+</file>
+
+<file path="vite.config.ts">
+// vite.config.ts
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
+import path from "path";
+
+export default defineConfig({
+  plugins: [react(), tsconfigPaths()],
+  resolve: {
+    alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
+  },
+  server: { port: 3000 },
+});
+</file>
+
+</files>

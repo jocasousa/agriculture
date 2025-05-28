@@ -1,12 +1,21 @@
-import { IsNotEmpty, Matches } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CreateProducerDto {
-  @IsNotEmpty()
-  @Matches(/^\d{11}$|^\d{14}$/, {
-    message: 'CPF (11 dígitos) ou CNPJ (14 dígitos)',
+  @ApiProperty({
+    description: 'CPF ou CNPJ do produtor',
+    example: '12345678901',
   })
+  @IsNotEmpty()
+  @IsString()
+  @Length(11, 14)
   document: string;
 
+  @ApiProperty({
+    description: 'Nome completo do produtor',
+    example: 'João Silva',
+  })
   @IsNotEmpty()
+  @IsString()
   name: string;
 }

@@ -20,7 +20,7 @@ export class FarmsService {
   ) {}
 
   async create(dto: CreateFarmDto): Promise<Farm> {
-    // valida soma de áreas 
+    // valida soma de áreas
     if (dto.arableArea + dto.vegetationArea > dto.totalArea) {
       throw new BadRequestException('Parcela excede área total');
     }
@@ -44,6 +44,13 @@ export class FarmsService {
 
   findAll(): Promise<Farm[]> {
     return this.farmRepo.find({ relations: ['producer'] });
+  }
+  async findByProducerId(producerId: string): Promise<Farm[]> {
+    // Busca fazendas onde producer.id === producerId
+    return this.farmRepo.find({
+      where: { producer: { id: producerId } },
+      relations: ['producer'],
+    });
   }
 
   async findOne(id: string): Promise<Farm> {
