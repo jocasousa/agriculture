@@ -15,6 +15,12 @@ Principais funcionalidades:
 
 ---
 
+## 🌐 Projeto Online
+
+O sistema já está disponível para acesso público em:
+
+[http://69.62.91.169:3000/](http://69.62.91.169:3000/)
+
 ## 🚀 Como rodar o projeto completo via Docker
 
 ### **Pré-requisitos**
