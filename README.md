@@ -90,11 +90,6 @@ npm run test
   usuário: admin  
   senha:   123456
   ```
-- **Usuário padrão para testes:**  
-  ```
-  usuário: user  
-  senha:   123456
-  ```
 
 ---
 
