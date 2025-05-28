@@ -69,7 +69,7 @@ npm install
 npm run test        # Para executar os testes do frontend
 npm run dev         # Para rodar local em desenvolvimento
 ```
-- App disponível em: [http://localhost:5173/](http://localhost:5173/) (ou endereço mostrado pelo terminal)
+- App disponível em: [http://localhost:3000/](http://localhost:3000/) (ou endereço mostrado pelo terminal)
 
 ---
 
