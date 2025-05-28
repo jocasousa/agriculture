@@ -21,6 +21,14 @@ O sistema já está disponível para acesso público em:
 
 [http://69.62.91.169:3000/](http://69.62.91.169:3000/)
 
+## 🔑 Dados para acesso
+
+- **Usuário admin:**  
+  ```
+  usuário: admin  
+  senha:   123456
+  ```
+
 ## 🚀 Como rodar o projeto completo via Docker
 
 ### **Pré-requisitos**
@@ -87,15 +95,8 @@ cd frontend
 npm run test
 ```
 
----
 
-## 🔑 Dados para acesso
 
-- **Usuário admin:**  
-  ```
-  usuário: admin  
-  senha:   123456
-  ```
 
 ---
 
