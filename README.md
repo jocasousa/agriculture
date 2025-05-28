@@ -23,8 +23,8 @@ Principais funcionalidades:
 ### **Passos para rodar tudo**
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/seu-usuario/seu-repo.git
-   cd seu-repo
+   git clone [https://github.com/seu-usuario/seu-repo.git](https://github.com/jocasousa/agriculture)
+   cd agriculture
    ```
 
 2. **Suba todos os containers (backend, frontend e postgres):**
