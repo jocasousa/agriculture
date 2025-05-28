@@ -23,7 +23,7 @@ Principais funcionalidades:
 ### **Passos para rodar tudo**
 1. **Clone o repositório:**
    ```bash
-   git clone [https://github.com/jocasousa/agriculture](https://github.com/jocasousa/agriculture.git)
+   git clone https://github.com/jocasousa/agriculture.git
    cd agriculture
    ```
 
